@@ -176,29 +176,28 @@ Note that there are sections of the SUT code that are unreachable, which is why 
 ![Image](https://drive.google.com/file/d/1bHWgCVSNCijeFPtFQzFrO1HgbbX1mzZJ/view?usp=share_link)
 ![Image](https://drive.google.com/file/d/1I1SYAQU00N4sqzvF6SOv-5aXqfrIcGnU/view?usp=share_link)
 
-##Range
+#Range
 <img src="./media/Constructor.png" width="500" />
-![Image](https://drive.google.com/file/d/192rG7kAc5Xf7vsi--7ekKSDE4UNgHCKd/view?usp=sharing)
-![Image](https://drive.google.com/file/d/1UtyRSrco1QJT9UAL87ROC4lXZf8pjXyK/view?usp=sharing)
-![Image](https://drive.google.com/file/d/1kg1zbOdZQZjF5vMWPRFzIRYNbsejJT0J/view?usp=sharing)
-![Image](https://drive.google.com/file/d/1nbJ0y7aiGbgW7rF7sAAyn82WXcvsuLnB/view?usp=sharing)
-![Image][https://drive.google.com/file/d/1xkJoE_UDpJx1yTpCGN7CL3UfUZMzYkbH/view?usp=sharing]
-![Image][https://drive.google.com/file/d/14EZgZNWHqq2erBLP5zoX_fwAbgRwfPBT/view?usp=sharing]
-![Image][https://drive.google.com/file/d/16TPXt_nJHjc79hMXYhHaM0xWopp3mVub/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1Viqw_kbBVsKIpd7qe8HIj658UnSNyDvw/view?usp=sharing]
-![Image][https://drive.google.com/file/d/196phHI34Ahr0IgyI7e7xxi4HG1P7kw91/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1X_RI5IAbRXRznlqWH0-40Xbbt9VRez8z/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1U0-ukCcA6e-o6ONSg3KV8ukm9BcKKAYs/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1rzu70l7l9J5rZNgLWb318nnXUFv76pxf/view?usp=sharing]
-![Image][https://drive.google.com/file/d/113h2Q-nAOjo9gw22xH-U3VVTR16FAmP1/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1vAlGO_h4_YZP3iJKKeoI9zfWCND6jiK3/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1WY8goUISkkChgNgI8pSQVTbg8RvVPOQY/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1Ccq8j_cL4mcQZ8tOueerzeJKEERRmcjL/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1MHRgYbyDfKTKyWy3glE6_GbWGrpHTNZ6/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1BwgSKIwI8XnRUhIZYkMR3ET0x3283Ua0/view?usp=sharing]
-![Image][https://drive.google.com/file/d/179nwnhmzeSBcFx1pqWv2Rgi4n2vd8YR1/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1FQIGZhlueoU5wvQs1E6c4-IDv943howZ/view?usp=sharing]
-![Image][https://drive.google.com/file/d/1YktCmtBnk0Mco_iaONJli_Yo4Txejhnd/view?usp=sharing]
+<img src="./media/combine.png" width="500" />
+<img src="./media/combineIgnoringNan.png" width="500" />
+<img src="./media/constrain.png" width="500" />
+<img src="./media/contains.png" width="500" />
+<img src="./media/equals.png" width="500" />
+<img src="./media/expand.png" width="500" />
+<img src="./media/expandToInclude.png" width="500" />
+<img src="./media/getCentralValue.png" width="500" />
+<img src="./media/getLength.png" width="500" />
+<img src="./media/getLowerBound.png" width="500" />
+<img src="./media/getUpperBound.png" width="500" />
+<img src="./media/hashCode.png" width="500" />
+<img src="./media/intersects.png" width="500" />
+<img src="./media/isNanRange.png" width="500" />
+<img src="./media/max.png" width="500" />
+<img src="./media/min.png" width="500" />
+<img src="./media/scale.png" width="500" />
+<img src="./media/shift.png" width="500" />
+<img src="./media/shiftWithNoZeroCrossing.png" width="500" />
+<img src="./media/toString.png" width="500" />
 
 # 6 Pros and Cons of coverage tools used and Metrics you report
 
