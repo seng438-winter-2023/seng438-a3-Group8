@@ -1,235 +1,250 @@
 **SENG 438 - Software Testing, Reliability, and Quality**
-> **Assignment \#3**
->   **Introduction to Testing and Defect (Bug) Tracking**
->   Instructors: 
->   -   Dr. Behrouz Far (far@ucalgary.ca)
->   -   Dr. Kangsoo Kim (kangsoo.kim@ucalgary.ca)
->   Department of Electrical and Software Engineering
->   University of Calgary
 
-Due Date: Check D2L for the submission deadline.
+**Lab. Report #3 – Code Coverage, Adequacy Criteria and Test Case Correlation**
+
+| Group: 8      |
+|-----------------|
+| Danny Duong 30120124                  |   
+| Kevin Johnson 30124217                 |   
+| Kaito Sugimura 30093204                |   
+| Joshua Walters 30119430                |   
 
 # 1 Introduction
 
-This assignment has a similar focus to the previous assignment, as it is once again unit testing. Unit testing will be performed using JUnit [3] in Eclipse [1]. As with the previous assignment, students will start by familiarizing themselves with the usage of the testing tools followed by implementation (enhancement) of the test suite. The major difference between the testing being performed in this assignment and the previous assignment (\#2) is that this assignment shows the students a different technique (white-box coverage criteria) in deciding what test cases to develop.
+This lab has a similar focus to the previous one, as it once again involves unit testing. As before, we familiarize ourselves with the usage of JUnit and other testing tools followed by implementation (enhancement) of the test suite. The major difference between the testing performed in this lab the the previous lab (#2) is that this lab involves a different technique (white-box coverage criteria) in deciding what test cases to develop.
+
+# 2 Manual data-flow coverage calculations for DataUtilities.calculateColumnTotal and [Some other method] methods
+
+### DataUtilities.calculateColumnTotal
+
+#### Data Flow Graph
+
+![Image](https://drive.google.com/file/d/1KbjnDGAu5S4hNM_UC2iWfnwakCsXpAfh/view)
+
+#### Def-use Sets per Statement
+
+| Node | Definitions | Uses|
+|-|-|-|
+| 1 | {data, column, total} | {}|
+| 2 | {rowCount} | {data}|
+| 3 | {r} | {}|
+| 4 |  {} | {r, rowCount}|
+| 5 | {n} | {data, r, column}|
+| 6 | {} | {n} |
+| 7 | {total} | {n} | 
+| 8 | {r} | {r} |
+| 9 | {r2} | {}
+| 10 | {} | {r2, rowCount} |
+| 11 | {n} | {data, r2, column} |
+| 12 | {} | {n} |
+| 13 | {total} | {n} |
+| 14 | {r2} | {r2} |
+| 15 | {} | {total} |
+
+
+#### DU-pairs per Variable
+
+Note that some DU-pairs are infeasible.
+
+| Variable | DU-pairs |
+|-|-|
+| data | (1, 2), (1, 5), (1, 11) |
+| column | (1, 5), (1, 11) |
+| total | (1, 15), (7, 15), (13, 15) |
+| rowCount | (2, 4), (2, 10) |
+| r | (3, 5), (3, 8), (8, 4) |
+| n | (5, 6), (5, 7), (11, 12), (11, 13) |
+| r2 | (9, 10), (9, 11), (14, 10) |
+
+#### Covered Pairs
+| Variable |Covered |
+|-|-|
+| a| true, true, true, true |
+| b| true , true , true , true |
+| i| true , true , true , true , true , true |
+
+#### DU-pair Coverage
+| DU-pair |Covered |
+|-|-|
+| (1,2)| true |
+| (1,5)| true |
+| (1,11)| true |
+| (1,15)| true |
+| (7,15)| true |
+| (13,15)| true |
+| (2,4)| true |
+| (2,10)| true |
+| (3,5)| true |
+| (3,8)| true |
+| (8,4)| true |
+| (5,6)| true |
+| (5,7)| true |
+| (11,12)| true |
+| (11,13)| true |
+| (9,10)| true |
+| (9,11)| true |
+| (14,10)| true |
+
+### DataUtilities.equal
+####Data Flow Graph
+![Image](https://drive.google.com/file/d/1KbjnDGAu5S4hNM_UC2iWfnwakCsXpAfh/view?usp=share_link)
+#### Def-use Sets per Statement
+| Node | Definitions | Uses|
+|-|-|-|
+| 1 | {a, b} | {}|
+| 2 | {} | {a}|
+| 3 | {} | {b}|
+| 4 | {} | {b}|
+| 5 | {} | {}|
+| 6 | {} | {a,b}|
+| 7 | {} | {}|
+| 8 | {i} | {a}|
+| 9 | {} | {a, i, b}|
+| 10 | {} | {}|
+| 11 | {i} | {i}|
+| 12 | {} | {}|
+
+#### DU-pairs per Variable
+
+| Variable | DU-pairs |
+|-|-|
+| a| (1,2), (1,6), (1,8), (1,9) |
+| b| (1,3), (1,4), (1,6), (1,9) |
+| i| (8,8), (8,9), (8,11), (11,8), (11,9), (11,11),|
+
+#### Covered Pairs
+| Variable |Covered |
+|-|-|
+| a| true, true, true, true |
+| b| true , true , true , true |
+| i| true , true , true , true , true , true |
 
-## 1.1 Objectives
+#### DU-pair Coverage
 
-The objectives of this assignment are to introduce students to the concepts of determining the adequacy of a
-white-box test suite based on its coverage of the code. In white-box testing, it is important to measure the
-adequacy of a test suite based on completeness defined by the portion of the code which is exercised. This
-definition can take several forms, including control-flow coverage criteria: e.g., statement (or node)
-coverage, decision (or edge) coverage, condition coverage, path coverage or data-flow coverage criteria: e.g., DU pairs coverage.
+| DU-pair |Covered |
+|-|-|
+| (1,2)| true |
+| (1,6)| true |
+| (1,8)| true |
+| (1,9)| true |
+| (1,3)| true |
+| (1,4)| true |
+| (1,6)| true |
+| (8,8)| true |
+| (8,9)| true |
+| (8,11)| true |
+| (11,8)| true |
+| (11,9)| true |
+| (11,11)| true |
 
-After completing the assignment, students will be able:
+# 3 A detailed description of the testing strategy for the new unit test
 
-- To use code coverage tools to measure test adequacy and become aware of similar tools for other programming environments
-- To design test cases to improve code coverage
-- To understand some of the benefits and drawbacks of measuring test adequacy with code coverage tools
-- To gain an understanding of how data-flow coverage works and be able to calculate it by hand
+Now that we have access to the SUT source code, we will now use white-box testing strategies to generate new unit tests. In particular, we will focus on three code coverage areas: statement coverage, branch coverage, and method coverage.
 
-## 1.2 Group work
+Statement coverage is the simplest level of code coverage and involves executing every line of code at least once. To increase statement coverage, we will create unit tests that cover code statements not yet executed in our existing tests. Due to unreachable code, there may be a limit to the statement coverage we can reach.
 
-All the tasks of this assignment should be completed in group. The report should also be completed as a group.
+Branch coverage is a more sophisticated level of coverage and involves executing all possible branches in the code being tested. To increase branch coverage, we will create unit tests that cover branches not yet covered in existing tests. Due to impossible conditions, there may be a limit to the branch coverage we can reach.
 
-## 1.3 Testing Tools
+Method coverage involves ensuring that each method in the code is executed at least once. It will be trivial to increase method coverage by creating unit tests that cover untested methods.
 
-In addition to JUnit (used and described in Assignment 2), in this assignment you will use one or several Java-based code coverage tool(s).
-Some coverage tools are listed below. You are free to choose your tool from that list or outside. Note that not all of tools work with your specific setup and configurations. It is your responsibility to find a tool that does the job for you or use other versions of IDEs
+# 4 A high level description of five selected test cases you have designed using coverage information, and how they have increased code coverage
 
-**List of code coverage tools:**
+We developed test cases for calculateColoumnTotal using the information calculated above. The first test case we developed was calculateColoumnTotalForTwoValues. Using the data flow graph and seeing that at node 4 the rowCount must be larger than one to run through some sections of code we made a test that uses data with 2 rows to account for this.
 
-- **EclEmma** [(http://www.eclemma.org/](http://www.eclemma.org/)) --> (recommended tool)
+The second test case we developed was calculateColumnTotalForNegativeColoumnSize. Referencing the flow graph again we observed that certain sections of code are only reached when r2 is greater than the row count. Seeing as r2 is defined as 0 this indicates a negative row count. To account for this in this test case we used input data that would return a negative row count to achieve this coverage.
 
-- **CodeCover** [(http://codecover.org/](http://codecover.org/))
+A third test case we developed was calculateRowTotalForNullvalidRow. We observed from the graph that at node 6 that a branch is not covered if we do not input data with some null values. To account for this and achieve coverage, the input data has some null values.
 
-- **Clover** ([http://www.atlassian.com/software/clover](http://www.atlassian.com/software/clover))
+The forth test case we developed contains in Range.java. To get through the first 2 branch statements for a total of 4 branches was trivial and easy to test. However, the problem was to cover all the conditions in the return statement. This seemed impossible at first, however, we quickly noticed by using NaN, we can bypass the first two if conditions and completely test this return statements conditions. 
 
-- **JaCoCo** [(http://www.eclemma.org/jacoco/](http://www.eclemma.org/jacoco/))
+The fifth notable test case we developed was combineIgnoringNaN in Range.java. There are 2 nested if statements with an additional single if statement in the end. As each nest of if statements or for loops (seen in other tests) increases the complexity and branches, we needed to be careful we were testing all possible routes of the branches. For example for the first if statement, we would need two "true" conditions to satisfy the nested if statement branches inside and one "false" condition to satisfy possible branch of completely skipping the if statement. Note that if we were to fully test the conditions inside the if statement, we would need even more tests.
 
-- **Coverlipse** [(http://coverlipse.sourceforge.net/](http://coverlipse.sourceforge.net/))
 
-- **Cobertura** [(http://cobertura.github.io/cobertura/](http://cobertura.github.io/cobertura/))
 
-**NOTE:** most coverage tools have issues with mocking plug-ins. If you face problems that could not be solved. Replace your test that uses a mock with a test case that uses the actual dependent on components (only for the sake of simplicity).
+# 5 A detailed report of the coverage achieved of each class and method (a screen shot from the code cover results in green and red color would suffice)
 
-## 1.4 System Under Test
+Note that there are sections of the SUT code that are unreachable, which is why we could not increase our coverage higher than we already did.
 
-The system to be tested for this assignment is JFreeChart [2], the same SUT used in Assignment \#2. The JFreeChart framework is intended to be integrated into other systems as a quick and simple way to add charting functionality to other Java applications. With this in mind, the API for JFreeChart is required to be relatively simple to understand, as it is intended to be used by developers as an open source off-the-shelf framework
+##DataUtilities
+![Image](https://drive.google.com/file/d/1-qN7l4fS_qb9tM-5ynbDcRJ5VftcZy3c/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1kOG6bRyzg0od7wUu6rA_Deb0l3EbTFak/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1fmj-VKGm5vZeJe8see_DdBBzlwzxqrxY/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1nLD7Tvr6ngN8_MRiGHZcDpnAz-d-QQDs/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1dkFj_Je9uDjQ688CSoajUer4aWQwCrk5/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1r425OQ6qh4PWzYQ3tSA1D2DhAWBx0WQh/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1K6x5a0mLV6VsGhv1T0ubpkDLIOeqIrEE/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1bHWgCVSNCijeFPtFQzFrO1HgbbX1mzZJ/view?usp=share_link)
+![Image](https://drive.google.com/file/d/1I1SYAQU00N4sqzvF6SOv-5aXqfrIcGnU/view?usp=share_link)
 
+##Range
+![Image](https://drive.google.com/file/d/192rG7kAc5Xf7vsi--7ekKSDE4UNgHCKd/view?usp=sharing)
+![Image](https://drive.google.com/file/d/1UtyRSrco1QJT9UAL87ROC4lXZf8pjXyK/view?usp=sharing)
+![Image](https://drive.google.com/file/d/1kg1zbOdZQZjF5vMWPRFzIRYNbsejJT0J/view?usp=sharing)
+![Image](https://drive.google.com/file/d/1nbJ0y7aiGbgW7rF7sAAyn82WXcvsuLnB/view?usp=sharing)
+![Image][https://drive.google.com/file/d/1xkJoE_UDpJx1yTpCGN7CL3UfUZMzYkbH/view?usp=sharing]
+![Image][https://drive.google.com/file/d/14EZgZNWHqq2erBLP5zoX_fwAbgRwfPBT/view?usp=sharing]
+![Image][https://drive.google.com/file/d/16TPXt_nJHjc79hMXYhHaM0xWopp3mVub/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1Viqw_kbBVsKIpd7qe8HIj658UnSNyDvw/view?usp=sharing]
+![Image][https://drive.google.com/file/d/196phHI34Ahr0IgyI7e7xxi4HG1P7kw91/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1X_RI5IAbRXRznlqWH0-40Xbbt9VRez8z/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1U0-ukCcA6e-o6ONSg3KV8ukm9BcKKAYs/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1rzu70l7l9J5rZNgLWb318nnXUFv76pxf/view?usp=sharing]
+![Image][https://drive.google.com/file/d/113h2Q-nAOjo9gw22xH-U3VVTR16FAmP1/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1vAlGO_h4_YZP3iJKKeoI9zfWCND6jiK3/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1WY8goUISkkChgNgI8pSQVTbg8RvVPOQY/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1Ccq8j_cL4mcQZ8tOueerzeJKEERRmcjL/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1MHRgYbyDfKTKyWy3glE6_GbWGrpHTNZ6/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1BwgSKIwI8XnRUhIZYkMR3ET0x3283Ua0/view?usp=sharing]
+![Image][https://drive.google.com/file/d/179nwnhmzeSBcFx1pqWv2Rgi4n2vd8YR1/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1FQIGZhlueoU5wvQs1E6c4-IDv943howZ/view?usp=sharing]
+![Image][https://drive.google.com/file/d/1YktCmtBnk0Mco_iaONJli_Yo4Txejhnd/view?usp=sharing]
 
-# 2 Familiarization
+# 6 Pros and Cons of coverage tools used and Metrics you report
 
-ALL students should ensure that they understand the concepts in this section before moving on to the rest of the assignment.
+EclEmma integrates well with the Eclipse IDE. It was easy to install and quick to acquire code coverage. Additionally, it never crashed and functions reliably. However, the UI is not discoverable; it was unclear at first how to view other coverage types aside from the default instruction coverage. It also appears to be missing condition coverage, which compelled us to substitute this coverage type for method coverage. It is also worth noting that EclEmma does not provide a way for the tester to know which branches are being tested. That is, for example, if a condition has 4 branches, and only 1 is tested, the tool will only tell you ¼ branches are tested; however, no other information is provided. 
 
-1.  If you haven’t done so already, download the JFreeChart v2.0.zip file from Github repository [./seng438-a3-artifacts.zip](./seng438-a3-artifacts.zip).
-2.  Extract the contents of the .zip file into a known location.
+# 7 A comparison on the advantages and disadvantages of requirements-based test generation and coverage-based test generation.
 
-## 2.1 Create an Eclipse Project
+### Requirements-based test generation
 
-1.  Open Eclipse.
-2.  Open the _New Project_ dialog by selecting the _File -\> New -\> Project_…
-3.  Ensure that _Java Project_ is selected and click _Next_.
-4.  The dialog should now be prompting for the project name. Enter _JFreeChart_Lab3_ in the _Project Name_ field and click _Finish_
-5.  Right click on the src folder of your project and click _import_
-6.  In the _Import_ dialog, select the _File System_ option (in the _General_ category) and click _Next_.
-7.  In the new panel on the _Import_ dialog, click on the _Browse…_ button, then navigate to the JFreeChart 1.0.19 directory and select _source_ folder.
-8.  Expand the source folder in the left panel and select _org_, then click on _Finish_ button. You should see the same panel as Figure 2.
+Advantages:
 
-**NOTE:** You might need to follow the steps in assignment 2 for _Adding External Libraries_ so then you have the _External Libraries_ as well.
-<img src="media/1.jpg" alt="media/1.jpg" width="360"/>
+- Helps to ensure that the software being tested meets the listed requirements
+- Focuses testing efforts on the most important functionalities of the system.
+- Helps to meet regulatory compliance, where certain requirements are a must
 
-**Figure 1 - New Java Project dialog with name and source path filled in**
+Disadvantages:
 
-<img src="media/3.jpg" alt="media/3.jpg" width="360"/>
+- Can be time-consuming and expensive to create and maintain test cases for every requirement
+- Assumes that the requirements are accurate and complete, which might not always be the case
+- Doesn’t guarantee that all code paths are tested
 
-**Figure 2 - Import Source**
+### Coverage-based test generation
 
-1.  The project (SUT) is now set up and ready for testing.
+Advantages:
 
-<img src="media/2.jpg" alt="media/2.jpg" width="360"/>
+- Helps ensure that all code paths are tested
+- Can identify areas of the code that aren’t covered by existing test cases
+- Coverage criteria can be measured automatically, making it faster to see where tests should be added
+- Can discover defects that may not be caught by requirements-based testing
 
-**Figure 3 - Part of packages and archives that should be included in the newly-created project**
+Disadvantages:
 
-## 2.2 Import a Test Suite
+- May miss coverage for some requirements
+- Doesn’t necessarily test the most important functionalities of the system
+- Can possibly result in redundant or unnecessary test cases
 
-For the purpose of demonstrating the abilities of coverage tools, the test suite developed in Assignment 2 will be used.
+Both requirements-based and coverage-based test generation have their own strengths and weaknesses, and the choice of which approach to use depends on the specific needs of the software testing effort.
 
-1.  Copy and paste your test codes into test folder of your new project or
-    follow the following steps to import them.
+# 8 A discussion on how the team work/effort was divided and managed
 
-    - Right click on the org.jfree.data package in the _Package Explorer_. Select _Import…_.
+For this assignment we divided the work equally.
 
-    - In the _Import_ dialog, select the _File System_ option (in the _General_ category) and click _Next_.
+# 9 Any difficulties encountered, challenges overcome, and lessons learned from performing the lab
 
-    - In the new panel on the _Import_ dialog, click on the _Browse…_ button to choose the directory you import your files from, then navigate to the directory from your previous assignment containing your test files for Range and DataUtilites. Click _OK_.
+The difficulties came when trying to find a reasonable place to stop with the testing. Our goal was to test and get the highest coverage we could. It took a lot of analysis and discovery to see if a particular line was simply unreachable because of infeasibility or just because we could not find a way. In the end, we tried to use logic and reasoning to prove the ones we missed are for sure infeasible. We learned many things through trying to cover all possibilities. We think the biggest lesson is how much time it takes to try to cover all these possibilities. In bigger projects, trying to cover each possibility would take an unreasonable amount of time and a lot of the testing we have done was redundant and unnecessary. It may require the testers experience and knowledge to figure out good percentages to stop as well as specific tests to cover more than others. 
 
-    - Check your DataUtilities and Range test classes (something similar to what is shown in Figure 3 below). Then click _Finish_.
+# 10 Comments/feedback on the lab itself
 
-<img src="media/3.jpg" alt="media/3.jpg" width="360"/>
+Nothing particularly big. We thought this lab was fun and easy to follow along. 
 
-**Figure 3 - Import dialog with Assignment 2 test classes selected**
-
-The test classes selected are now included in the org.jfree.data package in the new project. **_BUT: please make sure this is the case and that the package name in your test class is defined as org.jfree.data._**
-
-**Note**:
-
-- You should import jmock 2.x library as you did in Assignment 2
-- If you want to use junit 4.x, you should import junit 4.x libraries as you did in Assignment 2
-- You can find both libraries in [./seng438-a3-artifacts.zip](./seng438-a3-artifacts.zip).
-- To run EclEmma code coverage on Eclipse, select coverage button> Coverage As> JUnit Test. Figure 4
-
-<img src="media/4.jpg" alt="media/4.jpg" width="360"/>
-
-**Figure 4 - Run EclEmma code coverage tool**
-
-# 3 Instructions
-
-## 3.1 Measure Control Flow Coverage
-
-**_This design component_** requires that you and your team measure the adequacy of your test suite using one or more code coverage tools and report about the pros and cons of your metrics and tool choices
-
-Measurement of code coverage is performed in two main steps. First, classes must be selected for instrumentation. Classes selected for instrumentation are the classes which will have the coverage measured. Then, the test suite must be run with a coverage tool. You can use any coverage analysis tool. You need to report **three** **coverage** **metrics** (the suggested metrics to report are: statement, branch, and condition coverages).
-
-- **NOTE1:** If the coverage tool that you are using does not support any of the above metrics, first try another tool. If none reports the above measures, then replace the missing measure with another metric that the tool supports, e.g. you might decide to replace condition coverage with method coverage, if you are using EclEmma
-
-- **NOTE2:** Document all coverage tools you tried and what worked or did not work for your configuration. Explain what you fixed (e.g., removing mock objects, updating IDEs, switching to another tool, etc.)
-
-- **NOTE3:** You need to report the pros and cons of tools you tried and the metrics you chose.
-
-> Read Section 3.3. for more details.
-
-## 3.2 Measure Data Flow Coverage Manually
-
-To become more familiar with data flow coverage and achieve a deeper understanding of how coverage tools work, calculate the DU-pair coverage for two methods, by hand. The methods to analyze are: DataUtilities.calculateColumnTotal and one method of your choice from the org.jfree.data.Range class (that you have a test set for, from Assignment 2). Calculate the DU-pair coverage by tracing through the execution of each of your test cases for these methods, manually. This will need to be included in your report. You need to report the followings per method:
-
-- the data flow graph
-
-- the def-use sets per statement
-
-- list all DU-pairs per variable
-
-- for each test case show which pairs are covered
-
-- calculate the DU-Pair coverage.
-
-## 3.3 Test Suite Development
-
-In this section, you will be required to **design new unit tests** for two classes to increase their code coverage. The classes to be tested are: org.jfree.data.DataUtilities and org.jfree.data.Range. Note that although the focus in adequacy criteria has changed (it is now on source code), to develop new test cases the test oracle should still be derived from the requirements (as contained in the Javadocs of the SUT)
-
-As with any testing to be done, to begin with, a plan must be created. Document this test plan, as it will be included with your lab report. This plan should include information about who will create which tests, how you plan to develop tests to achieve the adequacy criteria. For thiassignment, a test suite should be developed which has at least thfollowing coverage for each of the classes under test
-
-Minimum coverage:
-
-- 90% statement coverage
-
-- 70% branch coverage
-
-- 60% condition coverage
-
-**Note**: If your initial test cases (the ones designed in assignment 2) already meet the above requirements, it is recommended that you still design new test cases and try to increase the coverage of your test cases.
-
-Carry out your test plan, creating tests for all methods. As a good test designer, you have to keep each test case (for a single control flow path for example) in a separate method, for example: testPositiveValuesForMethodX() and testNegativeValuesForMethodX(), instead of a single testMethodX(). This will help to keep test cases consistent, and make metrics taken later on more meaningful. Note that the classes have random defects in them intentionally, and thus several of your tests should fail. Therefore, to develop test oracles in your test code, you need to follow the specifications, not the actual results by the SUT code.
-
-If you have divided the tests and completed them individually, then upon completion of the tests, review each other’s’ tests, looking for any inconsistencies or defects in the tests themselves. Include all the updates made during the peer review process in your lab report
-
-Measure the code coverage (only control flow metrics as listed above) of your entire test suite, and record detailed coverage information for each class and method. Include this information (preferably in a tabular form) in your lab report
-
-# 4 Summary
-
-Students should now have a good understanding of measuring test suite adequacy based on coverage of the SUT’s code. This should include an understanding of some of the different control flow and data flow coverage criteria, and the relative difficulty to satisfy these coverage criteria.
-Students should now have an idea of some of the trade-offs that occur when choosing different test suite adequacy criteria for testing.
-
-# 5 Evaluation Criteria
-
-## 5.1 Demo (20%)
-
-The objectives for the demo are a) Preparing you for technical presentations, b) an early assessment of your work to give you a second chance to submit a high-quality report, and c) making sure everybody in the team contributes evenly.
-
-It is mandatory for all team members to attend the demo session and explain the TAs in the lab what they have done for this assignment individually. For this particular assignment, Lab6 is the demo day. You are expected to almost finish the assignment by the lab hour. All the team members should attend the lab. The TAs will go through the groups and each group must demonstrate the control flow coverages of the assignment 2 test suite. Then each student should show one test that improves at least one measure, by running the test and showing the new coverage. The students may be asked about the exact place that the missing coverage happened and also about the coverage tool(s) used
-
-**NOTE1: Student who miss the demo session or are unable to demo what is detailed above are considered as less-contributors and may lose up to the entire assignment 3’s mark.**
-
-**NOTE2: You still have time to further improve your test suite, after the demo session and before the deadline.**
-
-**NOTE3: In the demo session, the TAs might ask each student questions related to any part of the assignment for the purpose of students’ assessment.**
-
-## 5.2 JUnit Test Suite (40%)
-
-The test suite will be required to be submitted along with the lab report. Students will be graded on their unit tests. The grading criteria are as follows.
-
-| Marking Scheme                                                                                                                                                                                             |     |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| **Code coverage**: lesser coverage than coverage target specified in lab instructions above, would decrement your mark proportionally, unless you explain it by a valid the reason (e.g., infeasible path) | 15% |
-| **Clarity** (are they easy to follow, through commenting or style, etc.?)                                                                                                                                  | 10% |
-| **Correctness** (do the tests actually test what they are intended to test?)                                                                                                                               | 15% |
-
-## 5.3 Lab Report (40%)
-
-Students will be required to submit a report on their work in the assignment as a group. To be consistent, please use the template markdown file ([seng438-a3-team_number.md](seng438-a3-team_number.md)) provided online under the Assignment 3 folder. If desired, feel free to rename the sections, as long as the headings are still descriptive and accurate. In the report should be included.
-
-| Marking Scheme                                                                                                                                                                           |     |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Manual data-flow coverage calculations the two mentioned methods                                                                                                                         | 10% |
-| A detailed description of the testing strategy for the new unit tests                                                                                                                    | 5%  |
-| A high level description of five selected test cases you have designed using coverage information, and how they have increased code coverage                                             | 5%  |
-| A detailed report of the coverage achieved of each class and method (a screen shot from the code cover results in green and red color would suffice)                                     | 5%  |
-| Pros and cons of the coverage tools tried by your group in this assignment, in terms of reported measures, integration with the IDE and other plug-ins, user friendliness, crashes, etc. | 5%  |
-| A comparison on the advantages and disadvantages of requirements-based test generation and coverage-based test generation.                                                               | 5%  |
-| A discussion on how the team work/effort was divided and managed                                                                                                                         | 2%  |
-| Any difficulties encountered, challenges overcome, and lessons learned from performing the assignment                                                                                    | 2%  |
-| Comments/feedback on the assignment itself                                                                                                                                               | 1%  |
-
-A portion of the grade for the lab report will be allocated to organization and clarity.
-
-# 6 Acknowledgements
-
-This lab is part of a software-testing laboratory courseware available under a Creative Commons license.
-
-# 7 References
-
-1.  "Eclipse.org," Internet: [http://www.eclipse.org](http://www.eclipse.org/)
-
-2.  "JFreeChart," Internet: <http://www.jfree.org/jfreechart>
-
-3.  "JUnit," Internet: [http://www.junit.org](http://www.junit.org/)
